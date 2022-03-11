@@ -18,8 +18,7 @@ export class AuthService {
       await this.userService.create(createUserDto);
       return { success: true, message: 'User Registered' };
     } catch (e) {
-      console.log('CATCH');
-      return { success: false, message: e };
+      return { success: false, message: 'Invalid credential' };
     }
   }
 

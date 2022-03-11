@@ -89,7 +89,7 @@ export class QuestionService {
 
   async findOne(id: number): Promise<Question> {
     const question: Question = await this.questionRepository.findOne(id, {
-      relations: ['answers'],
+      relations: ['author'],
     });
 
     if (!question)
