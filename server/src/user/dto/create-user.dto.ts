@@ -8,7 +8,7 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  full_name: string;
+  fullname: string;
 
   @IsString()
   gender: string;

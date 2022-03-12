@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
-export const ROUTES_NAME = {
-  HOME: "HOME",
-  ABOUT: "ABOUT",
-  QUESTION_DETAIL: "QUESTION_DETAIL",
-  SIGNUP: "SINGUP",
-  LOGIN: "LOGIN",
-};
+export enum ROUTES_NAME {
+  HOME = "HOME",
+  ABOUT = "ABOUT",
+  QUESTION_DETAIL = "QUESTION_DETAIL",
+  SIGNUP = "SINGUP",
+  LOGIN = "LOGIN",
+}
 
 const routes: Array<RouteRecordRaw> = [
   {

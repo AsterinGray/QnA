@@ -3,38 +3,61 @@
     <main>
       <h1>Get Right Back</h1>
       <p>Login and get to ask your questions</p>
-      <form v-on:submit.prevent="onFormSubmit">
+      <form v-on:submit.prevent="onFormSubmit(user)">
         <div class="input-group">
           <label for="username">Username</label>
-          <input type="text" id="username" v-model="username" />
+          <input type="text" id="username" v-model="user.username" />
         </div>
         <div class="input-group">
           <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
+          <input type="password" id="password" v-model="user.password" />
         </div>
         <span>
           Don't have any account?
-          <router-link to="/signup">Get started</router-link>
+          <router-link :to="{ name: ROUTES_NAME.SIGNUP }">
+            Get started
+          </router-link>
         </span>
-        <button type="submit">Login</button>
+        <button type="submit" :disabled="isLoading">Login</button>
       </form>
     </main>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import cookies from "js-cookie";
+import { ROUTES_NAME } from "@/router";
+
 export default {
   name: "LoginView",
   data() {
     return {
-      username: "",
-      password: "",
+      user: { username: "", password: "" },
+      isLoading: false,
+      ROUTES_NAME,
     };
   },
   methods: {
-    onFormSubmit() {
-      console.log("Working");
-      console.log(this.username, this.password);
+    ...mapActions(["login"]),
+    successHandler({ accessToken, expiresIn }) {
+      cookies.set("QnA_token", accessToken, {
+        expires: Number(expiresIn.charAt(0)),
+      });
+      this.$toast.success("Login Success");
+      this.$router.push({ name: this.ROUTES_NAME.HOME });
+    },
+    errorHandler(message) {
+      this.$toast.error(message);
+      this.isLoading = false;
+    },
+    onFormSubmit(data) {
+      this.isLoading = true;
+      this.login({
+        data,
+        successHandler: this.successHandler,
+        errorHandler: this.errorHandler,
+      });
     },
   },
 };
@@ -79,6 +102,12 @@ main {
         text-align: left;
         font-weight: bold;
         margin-bottom: 0.5rem;
+        cursor: pointer;
+
+        &:disabled {
+          background-color: gray;
+          cursor: default;
+        }
       }
 
       input {

@@ -1,5 +1,5 @@
 import {
-  ActionDataPayload,
+  ActionData,
   Question,
   QuestionData,
 } from "@/interfaces/index.interface";
@@ -10,24 +10,24 @@ import config from "@/config";
 
 interface State {
   allQuestions: Question[];
-  createdQuestion: Question;
+  createQuestion: QuestionData;
 }
 
 const question = {
   state: {
     allQuestions: [],
-    createdQuestion: {},
+    createQuestion: {},
   },
   getters: {
     allQuestions: (state: State): Question[] => state.allQuestions,
-    getCreatedQuestion: (state: State): Question => state.createdQuestion,
+    createQuestion: (state: State): QuestionData => state.createQuestion,
   },
   mutations: {
     setAllQuestions: (state: State, data: Question[]): void => {
       state.allQuestions = data;
     },
-    setCreatedQuestion: (state: State, data: Question): void => {
-      state.createdQuestion = data;
+    setCreateQuestion: (state: State, data: QuestionData): void => {
+      state.createQuestion = data;
     },
   },
   actions: {
@@ -36,20 +36,13 @@ const question = {
       commit("setAllQuestions", res.data);
     },
     async createQuestion(
-      { commit }: { commit: Commit },
-      { data, successHandler, errorHandler }: ActionDataPayload<QuestionData>
+      _: any,
+      { data, successHandler, errorHandler }: ActionData<QuestionData>
     ): Promise<void> {
       httpApi
         .post(config.api.question.create, data)
-        .then((res) => {
-          commit("setCreatedQuestion", res.data);
-        })
-        .catch((e) => {
-          if (e.response.status === 401) {
-            console.log("unaithorize");
-            errorHandler();
-          }
-        });
+        .then(() => successHandler())
+        .catch(() => errorHandler());
     },
   },
 };

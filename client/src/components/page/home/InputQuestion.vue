@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import { ROUTES_NAME } from "@/router";
 
 export default {
@@ -30,21 +30,24 @@ export default {
       isLoading: false,
     };
   },
-  computed: {
-    ...mapGetters({
-      createdQuestion: "getCreatedQuestion",
-    }),
-  },
   methods: {
     ...mapActions(["createQuestion"]),
-    redirectToLogin: function () {
+    ...mapMutations(["setCreateQuestion"]),
+    errorHandler: function () {
+      this.$toast.error("Need to login before ask question");
       this.$router.push({ name: ROUTES_NAME.LOGIN });
+    },
+    successHandler: function () {
+      this.$toast.success("Question created successfully");
+      this.isLoading(false);
     },
     onFormSubmit: function (title, detail) {
       this.isLoading = true;
+      this.setCreateQuestion({ title, detail });
       this.createQuestion({
         data: { title, detail },
-        errorHandle: this.redirectToLogin,
+        successHandler: this.successHandler,
+        errorHandler: this.errorHandler,
       });
     },
   },

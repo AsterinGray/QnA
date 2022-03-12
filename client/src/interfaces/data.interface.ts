@@ -8,6 +8,13 @@ export interface LoginData {
   password: string;
 }
 
+export interface RegisterData {
+  username: string;
+  password: string;
+  gender: string;
+  fullname: string;
+}
+
 export interface BaseComponentData {
   isLoading: boolean;
 }

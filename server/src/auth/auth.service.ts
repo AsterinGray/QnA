@@ -23,7 +23,7 @@ export class AuthService {
 
   async login(data: LoginUserDto): Promise<LoginResponse> {
     validateData(data);
-    const user = await this.userService.findByLogin(data);
+    const user: User = await this.userService.findByLogin(data);
     const expiresIn = process.env.TOKEN_EXPIRES_DURATION;
     const accessToken = this.jwtService.sign({ username: user.username });
     return { expiresIn, accessToken };

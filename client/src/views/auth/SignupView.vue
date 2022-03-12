@@ -3,20 +3,33 @@
     <main>
       <h1>Get Started</h1>
       <p>Sign Up and get started to contribute into the community</p>
-      <form v-on:submit.prevent="onFormSubmit({ username, password })">
+      <form v-on:submit.prevent="onFormSubmit(user)">
         <div class="input-group">
           <label for="username">Username</label>
-          <input type="text" id="username" v-model="username" />
+          <input type="text" id="username" v-model="user.username" />
+        </div>
+        <div class="input-group">
+          <label for="fullname">Fullname</label>
+          <input type="text" id="fullname" v-model="user.fullname" />
+        </div>
+        <div class="input-group">
+          <label for="gender">Gender</label>
+          <select id="gender" v-model="user.gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
         </div>
         <div class="input-group">
           <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" />
+          <input type="password" id="password" v-model="user.password" />
         </div>
         <span>
           Already have an account?
-          <router-link to="/login">Get right back</router-link>
+          <router-link :to="{ name: ROUTES_NAME.LOGIN }">
+            Get right back
+          </router-link>
         </span>
-        <button type="submit" :disabled="isLoading">Sing Up</button>
+        <button type="submit" :disabled="isLoading">Sign Up</button>
       </form>
     </main>
   </div>
@@ -24,24 +37,34 @@
 
 <script>
 import { mapActions } from "vuex";
+import { ROUTES_NAME } from "@/router";
 
 export default {
   name: "SignupView",
   data: () => {
     return {
-      username: "",
-      password: "",
+      user: { username: "", fullname: "", gender: "", password: "" },
       isLoading: false,
+      ROUTES_NAME,
     };
   },
   methods: {
     ...mapActions(["register"]),
-    changeIsLoading() {
-      this.isLoading = !this.isLoading;
+    successHandler() {
+      this.$toast.success("Account registered");
+      this.$router.push({ name: ROUTES_NAME.LOGIN });
+    },
+    errorHandler(message) {
+      this.$toast.error(message);
+      this.isLoading = false;
     },
     onFormSubmit(data) {
-      this.changeIsLoading();
-      this.register({ data, successHandler: this.changeIsLoading });
+      this.isLoading = true;
+      this.register({
+        data,
+        successHandler: this.successHandler,
+        errorHandler: this.errorHandler,
+      });
     },
   },
 };
@@ -75,6 +98,12 @@ main {
       border: none;
       border-radius: 1rem;
       margin-top: 1rem;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: gray;
+        cursor: default;
+      }
     }
 
     .input-group {
@@ -88,10 +117,12 @@ main {
         margin-bottom: 0.5rem;
       }
 
-      input {
+      input,
+      select {
         padding: 0.5rem;
         border: 1px solid darkgray;
         border-radius: 1rem;
+        background-color: white;
       }
     }
   }

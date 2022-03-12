@@ -6,17 +6,47 @@
     </div>
     <search-bar />
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/signup"><button>Sign Up</button></router-link>
+      <router-link :to="{ name: ROUTES_NAME.HOME }">Home</router-link>
+      <router-link :to="{ name: ROUTES_NAME.ABOUT }">About</router-link>
+      <router-link :to="{ name: ROUTES_NAME.SIGNUP }" v-if="isAuthenticate">
+        Profile
+      </router-link>
+      <button v-if="isAuthenticate" v-on:click="logout">Logout</button>
+      <router-link :to="{ name: ROUTES_NAME.SIGNUP }" v-else>
+        <button>Sign Up</button>
+      </router-link>
     </nav>
   </header>
 </template>
 
 <script>
 import SearchBar from "@/components/common/SearchBar.vue";
+import { mapGetters, mapMutations } from "vuex";
+import { ROUTES_NAME } from "@/router";
+import cookies from "js-cookie";
+
 export default {
   name: "NavigationBar",
+  data() {
+    return {
+      ROUTES_NAME,
+    };
+  },
+  computed: {
+    ...mapGetters(["isAuthenticate"]),
+    watch: {
+      isAuthenticate: function (value) {
+        this.isAuthenticate = value;
+      },
+    },
+  },
+  methods: {
+    ...mapMutations(["setIsAuthenticate"]),
+    logout() {
+      cookies.remove("QnA_token");
+      this.setIsAuthenticate(false);
+    },
+  },
   components: {
     SearchBar,
   },
@@ -52,6 +82,10 @@ header {
       color: black;
       margin-left: 1rem;
 
+      > button {
+        margin: 0;
+      }
+
       &.router-link-exact-active {
         color: dodgerblue;
       }
@@ -60,7 +94,7 @@ header {
     button {
       color: white;
       background-color: dodgerblue;
-      margin-left: 1rem;
+      margin-left: 0.5rem;
       border: none;
       padding: 0.5rem 1rem;
       border-radius: 0.8rem;

@@ -23,7 +23,7 @@ export class User {
   password: string;
 
   @Column()
-  full_name: string;
+  fullname: string;
 
   @Column()
   gender: string;
