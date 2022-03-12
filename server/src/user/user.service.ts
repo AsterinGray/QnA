@@ -6,6 +6,7 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { validateData } from '@/shared/utlis/validator';
 
 @Injectable()
 export class UserService {
@@ -32,12 +33,18 @@ export class UserService {
   }
 
   findByPayload(username: string): Promise<User> {
-    return this.userRepository.findOne({ where: { username } });
+    const user = this.userRepository.findOne({ where: { username } });
+    if (!user)
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+
+    return user;
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const { username } = createUserDto;
-    const password = await bcrypt.hash(createUserDto.password, 10);
+  async create(data: CreateUserDto): Promise<User> {
+    validateData(data);
+
+    const { username } = data;
+    const password = await bcrypt.hash(data.password, 10);
 
     try {
       await this.userRepository.findOne({ where: { username } });
@@ -45,11 +52,12 @@ export class UserService {
       throw new HttpException('Username is invalid', HttpStatus.BAD_REQUEST);
     }
 
-    return this.userRepository.save({ ...createUserDto, password });
+    return this.userRepository.save({ ...data, password });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-    return this.userRepository.update(id, updateUserDto);
+  update(id: number, data: UpdateUserDto): Promise<UpdateResult> {
+    validateData(data);
+    return this.userRepository.update(id, data);
   }
 
   remove(id: number): Promise<DeleteResult> {

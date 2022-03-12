@@ -6,7 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Answer } from './entities/answer.entity';
 import { QuestionLikes } from './entities/question-likes.entity';
 import { AnswerLikes } from './entities/answer-likes.entity';
-import { MockType, repositoryMockFactory } from '../shared/utils';
+import { MockType, repositoryMockFactory } from '../shared/utlis/test';
 
 describe('QuestionService', () => {
   let service: QuestionService;

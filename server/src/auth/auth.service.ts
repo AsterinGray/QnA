@@ -1,10 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import { User } from '../user/entities/user.entity';
-import { LoginUserDto } from '../user/dto/login-user.dto';
-import { LoginStatus, RegistrationStatus } from './interface';
+
+import { UserService } from '@/user/user.service';
+import { User } from '@/user/entities/user.entity';
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { LoginUserDto } from '@/user/dto/login-user.dto';
+import { LoginResponse } from '@/shared/interface/response';
+
+import { validateData } from '@/shared/utlis/validator';
 
 @Injectable()
 export class AuthService {
@@ -13,27 +16,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<RegistrationStatus> {
-    try {
-      await this.userService.create(createUserDto);
-      return { success: true, message: 'User Registered' };
-    } catch (e) {
-      return { success: false, message: 'Invalid credential' };
-    }
+  async register(data: CreateUserDto): Promise<User> {
+    validateData(data);
+    return await this.userService.create(data);
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<LoginStatus> {
-    const user = await this.userService.findByLogin(loginUserDto);
+  async login(data: LoginUserDto): Promise<LoginResponse> {
+    validateData(data);
+    const user = await this.userService.findByLogin(data);
     const expiresIn = process.env.TOKEN_EXPIRES_DURATION;
     const accessToken = this.jwtService.sign({ username: user.username });
     return { expiresIn, accessToken };
   }
 
   async validateUser(username: string): Promise<User> {
-    const user = await this.userService.findByPayload(username);
-    if (!user) {
-      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-    }
-    return user;
+    return await this.userService.findByPayload(username);
   }
 }

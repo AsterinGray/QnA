@@ -3,39 +3,33 @@ import {
   Post,
   UseGuards,
   Body,
-  HttpException,
   HttpStatus,
   Get,
   Req,
   HttpCode,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { LoginUserDto } from '@/user/dto/login-user.dto';
+import { User } from '@/user/entities/user.entity';
+
+import { LoginResponse } from '@/shared/interface/response';
+
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import { LoginStatus, RegistrationStatus } from './interface';
-import { LoginUserDto } from '../user/dto/login-user.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  public async register(
-    @Body() createUserDto: CreateUserDto,
-  ): Promise<RegistrationStatus> {
-    const result: RegistrationStatus = await this.authService.register(
-      createUserDto,
-    );
-
-    if (!result.success)
-      throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
-
-    return result;
+  public async register(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.authService.register(createUserDto);
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
+  async login(@Body() loginUserDto: LoginUserDto): Promise<LoginResponse> {
     return await this.authService.login(loginUserDto);
   }
 

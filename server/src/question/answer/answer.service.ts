@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Answer } from '../entities/answer.entity';
 import { Repository } from 'typeorm';
 import { AnswerLikes } from '../entities/answer-likes.entity';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class AnswerService {
@@ -54,11 +55,8 @@ export class AnswerService {
     return this.answerRepository.findOne(questionId);
   }
 
-  async update(
-    id: number,
-    user: any,
-    updateAnswerDto: UpdateAnswerDto,
-  ): Promise<Answer> {
+  async update(id: number, user: any, data: UpdateAnswerDto): Promise<Answer> {
+    validate(data);
     const answer: Answer = await this.answerRepository.findOne(id, {
       loadRelationIds: true,
     });
@@ -73,7 +71,7 @@ export class AnswerService {
         HttpStatus.UNAUTHORIZED,
       );
 
-    await this.answerRepository.update(id, updateAnswerDto);
+    await this.answerRepository.update(id, data);
     return this.answerRepository.findOne(id);
   }
 

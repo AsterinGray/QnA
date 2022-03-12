@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { Answer } from './entities/answer.entity';
 import { QuestionLikes } from './entities/question-likes.entity';
+import { validateData } from '@/shared/utlis/validator';
 
 @Injectable()
 export class QuestionService {
@@ -19,9 +20,10 @@ export class QuestionService {
     private questionLikesRepository: Repository<QuestionLikes>,
   ) {}
 
-  create(user: any, createQuestionDto: CreateQuestionDto): Promise<Question> {
+  create(user: any, data: CreateQuestionDto): Promise<Question> {
+    validateData(data);
     return this.questionRepository.save({
-      ...createQuestionDto,
+      ...data,
       author: user,
     });
   }
@@ -29,15 +31,17 @@ export class QuestionService {
   async addAnswer(
     author: any,
     questionId: number,
-    createAnswerDto: CreateAnswerDto,
+    data: CreateAnswerDto,
   ): Promise<Answer> {
+    validateData(data);
+
     const question = await this.questionRepository.findOne(questionId);
 
     if (!question)
       throw new HttpException(`Question doesn't exist`, HttpStatus.NOT_FOUND);
 
     return this.answerRepository.save({
-      ...createAnswerDto,
+      ...data,
       author,
       question,
     });
@@ -101,8 +105,9 @@ export class QuestionService {
   async update(
     id: number,
     user: any,
-    updateQuestionDto: UpdateQuestionDto,
+    data: UpdateQuestionDto,
   ): Promise<Question> {
+    validateData(data);
     const question: Question = await this.questionRepository.findOne(id, {
       loadRelationIds: true,
     });
@@ -117,7 +122,7 @@ export class QuestionService {
         HttpStatus.UNAUTHORIZED,
       );
 
-    await this.questionRepository.update(id, updateQuestionDto);
+    await this.questionRepository.update(id, data);
     return this.questionRepository.findOne(id);
   }
 
