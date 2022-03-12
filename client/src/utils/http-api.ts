@@ -5,15 +5,14 @@ const httpApi = axios.create({
 });
 
 httpApi.interceptors.request.use(
-    (config) => {
-      console.info(config)
-      return config;
-    },
-    (error) => {
-      console.warn(Promise.reject(error))
-      return Promise.reject(error)
-    }
+  (config) => {
+    console.info(config);
+    return config;
+  },
+  (error) => {
+    console.warn(Promise.reject(error));
+    return Promise.reject(error);
+  }
 );
-
 
 export default httpApi;

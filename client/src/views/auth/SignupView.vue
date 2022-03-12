@@ -3,7 +3,7 @@
     <main>
       <h1>Get Started</h1>
       <p>Sign Up and get started to contribute into the community</p>
-      <form v-on:submit.prevent="onFormSubmit({username, password})">
+      <form v-on:submit.prevent="onFormSubmit({ username, password })">
         <div class="input-group">
           <label for="username">Username</label>
           <input type="text" id="username" v-model="username" />
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "SignupView",
@@ -35,15 +35,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['register']),
-    setIsLoading() {
-      this.isLoading = !this.isLoading
+    ...mapActions(["register"]),
+    changeIsLoading() {
+      this.isLoading = !this.isLoading;
     },
     onFormSubmit(data) {
-      this.setIsLoading()
-      this.register({data, successHandler: this.setIsLoading})
+      this.changeIsLoading();
+      this.register({ data, successHandler: this.changeIsLoading });
     },
-  }
+  },
 };
 </script>
 

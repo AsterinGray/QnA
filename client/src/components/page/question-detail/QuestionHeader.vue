@@ -2,7 +2,9 @@
   <h1>{{ title }}</h1>
   <p>{{ detail }}</p>
   <p class="information">
-    <span>by {{ author.username }}</span>
+    <span v-if="author">
+      <span v-if="author.username">{{ author.username }}</span>
+    </span>
     <span>{{ likes }} likes</span>
   </p>
 </template>

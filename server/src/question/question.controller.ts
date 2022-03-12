@@ -63,6 +63,11 @@ export class QuestionController {
     return this.questionService.findOne(id);
   }
 
+  @Get(':id/answer')
+  findOneAnswer(@Param('id') id: number): Promise<Answer[]> {
+    return this.questionService.findOneAnswer(id);
+  }
+
   @Patch(':id')
   @UseGuards(AuthGuard())
   update(

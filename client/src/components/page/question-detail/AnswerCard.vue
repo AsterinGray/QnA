@@ -2,7 +2,9 @@
   <div class="answer-card">
     <h3>{{ detail }}</h3>
     <p>
-      <span>{{ author }}</span>
+      <span v-if="author">
+        <span v-if="author.username">{{ author.username }}</span>
+      </span>
       <span>{{ likes }} likes</span>
     </p>
   </div>

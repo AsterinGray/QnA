@@ -1,11 +1,11 @@
 <template>
   <input-question />
   <h1>See what other have questioned</h1>
-  <div class="card" id="content" v-if="questions">
+  <div class="card question__container" v-if="questions">
     <router-link
-        v-for="question in questions"
-        :key="question.id"
-        :to="{ path: `/question/${question.id}` }"
+      v-for="question in questions"
+      :key="question.id"
+      :to="{ path: `/question/${question.id}` }"
     >
       <question-card v-bind="question" />
     </router-link>
@@ -45,13 +45,9 @@ h1 {
   text-align: left;
 }
 
-#content {
+.question__container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-
-  #card {
-    padding: 0.5rem 1rem;
-  }
 }
 </style>

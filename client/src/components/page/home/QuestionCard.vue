@@ -1,5 +1,5 @@
 <template>
-  <div id="card">
+  <div class="question__card">
     <h3>{{ title }}</h3>
     <div id="detail">
       <div>questioned by {{ author.username }}</div>
@@ -17,11 +17,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-#card {
+.question__card {
   border: 1px solid lightgray;
   border-radius: 0.5rem;
+  padding: 1rem;
 
   h3 {
+    margin: 0 0 1rem 0;
     color: #2c3e50;
   }
 

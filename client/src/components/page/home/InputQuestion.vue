@@ -19,11 +19,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import {ROUTES_NAME} from "@/router";
+import { ROUTES_NAME } from "@/router";
 
 export default {
   name: "SearchBar",
-  data () {
+  data() {
     return {
       title: "",
       detail: "",
@@ -38,15 +38,14 @@ export default {
   methods: {
     ...mapActions(["createQuestion"]),
     redirectToLogin: function () {
-      this.$router.push({name: ROUTES_NAME.LOGIN})
+      this.$router.push({ name: ROUTES_NAME.LOGIN });
     },
     onFormSubmit: function (title, detail) {
       this.isLoading = true;
       this.createQuestion({
-            data: {title, detail},
-            errorHandle: this.redirectToLogin
-          }
-      );
+        data: { title, detail },
+        errorHandle: this.redirectToLogin,
+      });
     },
   },
 };

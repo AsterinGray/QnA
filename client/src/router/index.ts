@@ -6,8 +6,8 @@ export const ROUTES_NAME = {
   ABOUT: "ABOUT",
   QUESTION_DETAIL: "QUESTION_DETAIL",
   SIGNUP: "SINGUP",
-  LOGIN: "LOGIN"
-}
+  LOGIN: "LOGIN",
+};
 
 const routes: Array<RouteRecordRaw> = [
   {

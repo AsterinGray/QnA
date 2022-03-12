@@ -10,11 +10,11 @@ import NavigationBar from "@/components/common/NavigationBar";
 import auth from "@/utils/auth";
 
 export default {
-  components: {NavigationBar},
+  components: { NavigationBar },
   created() {
     auth.initTokenHeader();
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

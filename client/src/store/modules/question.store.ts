@@ -1,4 +1,8 @@
-import {ActionDataPayload, Question, QuestionData} from "@/interfaces/index.interface";
+import {
+  ActionDataPayload,
+  Question,
+  QuestionData,
+} from "@/interfaces/index.interface";
 import httpApi from "@/utils/http-api";
 import { Commit } from "vuex";
 import { AxiosResponse } from "axios";
@@ -33,18 +37,19 @@ const question = {
     },
     async createQuestion(
       { commit }: { commit: Commit },
-      {data, successHandler, errorHandler}: ActionDataPayload<QuestionData>
+      { data, successHandler, errorHandler }: ActionDataPayload<QuestionData>
     ): Promise<void> {
-      httpApi.post(config.api.question.create, data)
-          .then((res) => {
-            commit("setCreatedQuestion", res.data)
-          })
-          .catch((e) => {
-            if(e.response.status === 401) {
-              console.log("unaithorize")
-              errorHandler()
-            }
-          })
+      httpApi
+        .post(config.api.question.create, data)
+        .then((res) => {
+          commit("setCreatedQuestion", res.data);
+        })
+        .catch((e) => {
+          if (e.response.status === 401) {
+            console.log("unaithorize");
+            errorHandler();
+          }
+        });
     },
   },
 };

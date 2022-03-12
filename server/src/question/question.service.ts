@@ -102,6 +102,14 @@ export class QuestionService {
     return question;
   }
 
+  async findOneAnswer(id: number): Promise<Answer[]> {
+    const question: Question = await this.findOne(id);
+    return await this.answerRepository.find({
+      where: { question },
+      relations: ['author'],
+    });
+  }
+
   async update(
     id: number,
     user: any,
