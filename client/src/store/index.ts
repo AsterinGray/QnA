@@ -1,4 +1,4 @@
-import { createStore, Module } from "vuex";
+import { createStore } from "vuex";
 import search, { SearchState } from "@/store/modules/search.store";
 import question, { QuestionState } from "@/store/modules/question.store";
 import questionDetail, {
