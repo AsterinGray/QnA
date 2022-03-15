@@ -4,9 +4,9 @@ export default {
     register: "/auth/register",
   },
   user: {
-    get: (id: number): string => `/user/${id}`,
-    update: (id: number): string => `/user/${id}`,
-    delete: (id: number): string => `/user/${id}`,
+    get: "/user",
+    update: "/user",
+    delete: "/user",
   },
   question: {
     get: "/question",

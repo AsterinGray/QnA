@@ -7,20 +7,22 @@
 
 <script>
 import NavigationBar from "@/components/common/NavigationBar";
-import auth from "@/utils/auth";
-import { mapMutations } from "vuex";
+import { initTokenHeader, removeTokenHeader } from "@/utils/auth";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: { NavigationBar },
+  computed: {
+    ...mapGetters(["isAuthenticate"]),
+  },
   methods: {
     ...mapMutations(["setIsAuthenticate"]),
   },
   created() {
-    auth.initTokenHeader(this.setIsAuthenticate);
+    initTokenHeader(this.setIsAuthenticate);
   },
   watch: {
     isAuthenticate: function (val) {
-      console.log(`${val} isAuthenticate modify token header`);
-      auth.modifyTokenHeader(val);
+      if (!val) removeTokenHeader();
     },
   },
 };

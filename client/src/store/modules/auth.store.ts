@@ -1,29 +1,22 @@
-import { User } from "@/interfaces/main.interface";
 import { Commit } from "vuex";
 import httpApi from "@/utils/http-api";
 import config from "@/config";
 import { LoginData, RegisterData } from "@/interfaces/data.interface";
 import { ActionData } from "@/interfaces/base.interface";
 
-interface State {
-  user: User;
+export interface AuthState {
   isAuthenticate: boolean;
 }
 
 const auth = {
   state: {
-    user: {},
     isAuthenticate: false,
   },
   getters: {
-    user: (state: State): User => state.user,
-    isAuthenticate: (state: State): boolean => state.isAuthenticate,
+    isAuthenticate: (state: AuthState): boolean => state.isAuthenticate,
   },
   mutations: {
-    setUser: (state: State, data: User): void => {
-      state.user = data;
-    },
-    setIsAuthenticate: (state: State, data: boolean): void => {
+    setIsAuthenticate: (state: AuthState, data: boolean): void => {
       state.isAuthenticate = data;
     },
   },

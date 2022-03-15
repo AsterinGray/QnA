@@ -15,8 +15,8 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOne(id);
+  findOne(user: any): Promise<User> {
+    return this.findByPayload(user.username);
   }
 
   async findByLogin({ username, password }: LoginUserDto): Promise<User> {
@@ -28,14 +28,6 @@ export class UserService {
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid)
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-
-    return user;
-  }
-
-  findByPayload(username: string): Promise<User> {
-    const user = this.userRepository.findOne({ where: { username } });
-    if (!user)
-      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
 
     return user;
   }
@@ -55,12 +47,46 @@ export class UserService {
     return this.userRepository.save({ ...data, password });
   }
 
-  update(id: number, data: UpdateUserDto): Promise<UpdateResult> {
-    validateData(data);
-    return this.userRepository.update(id, data);
+  async update(id: number, data: UpdateUserDto): Promise<User> {
+    if (!data.password)
+      throw new HttpException('Password required', HttpStatus.BAD_REQUEST);
+
+    const user: User = await this.userRepository.findOne(id);
+
+    const isValid = await bcrypt.compare(data.password, user.password);
+    if (!isValid)
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+
+    if (data.username && data.username !== user.username)
+      throw new HttpException(
+        'Username cannot be change',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    await this.userRepository.update(id, { ...data, password: user.password });
+    console.log(user.username);
+    return await this.findByPayload(user.username);
   }
 
   remove(id: number): Promise<DeleteResult> {
     return this.userRepository.delete(id);
+  }
+
+  findByPayload(username: string): Promise<User> {
+    const user = this.userRepository.findOne({
+      where: { username },
+      select: [
+        'id',
+        'username',
+        'fullname',
+        'gender',
+        'created_at',
+        'updated_at',
+      ],
+    });
+    if (!user)
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+
+    return user;
   }
 }

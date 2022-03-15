@@ -1,9 +1,20 @@
-import { createStore } from "vuex";
-import search from "@/store/modules/search.store";
-import question from "@/store/modules/question.store";
-import questionDetail from "@/store/modules/question-detail.store";
-import auth from "@/store/modules/auth.store";
+import { createStore, Module } from "vuex";
+import search, { SearchState } from "@/store/modules/search.store";
+import question, { QuestionState } from "@/store/modules/question.store";
+import questionDetail, {
+  QuestionDetailState,
+} from "@/store/modules/question-detail.store";
+import auth, { AuthState } from "@/store/modules/auth.store";
+import user, { UserState } from "@/store/modules/user.store";
 
-export default createStore({
-  modules: { auth, search, question, questionDetail },
+interface RootState {
+  auth: AuthState;
+  user: UserState;
+  search: SearchState;
+  question: QuestionState;
+  questionDetail: QuestionDetailState;
+}
+
+export default createStore<RootState>({
+  modules: { auth, user, search, question, questionDetail },
 });

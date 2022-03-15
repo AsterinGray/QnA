@@ -91,6 +91,12 @@ main {
       border: none;
       border-radius: 1rem;
       margin-top: 1rem;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: gray;
+        cursor: default;
+      }
     }
 
     .input-group {
@@ -103,11 +109,6 @@ main {
         font-weight: bold;
         margin-bottom: 0.5rem;
         cursor: pointer;
-
-        &:disabled {
-          background-color: gray;
-          cursor: default;
-        }
       }
 
       input {

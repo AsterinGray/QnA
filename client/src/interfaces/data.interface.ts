@@ -15,6 +15,12 @@ export interface RegisterData {
   fullname: string;
 }
 
+export interface UpdateProfileData {
+  password: string;
+  gender: string;
+  fullname: string;
+}
+
 export interface BaseComponentData {
   isLoading: boolean;
 }

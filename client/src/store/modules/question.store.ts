@@ -8,7 +8,7 @@ import { Commit } from "vuex";
 import { AxiosResponse } from "axios";
 import config from "@/config";
 
-interface State {
+export interface QuestionState {
   allQuestions: Question[];
   createQuestion: QuestionData;
 }
@@ -19,14 +19,15 @@ const question = {
     createQuestion: {},
   },
   getters: {
-    allQuestions: (state: State): Question[] => state.allQuestions,
-    createQuestion: (state: State): QuestionData => state.createQuestion,
+    allQuestions: (state: QuestionState): Question[] => state.allQuestions,
+    createQuestion: (state: QuestionState): QuestionData =>
+      state.createQuestion,
   },
   mutations: {
-    setAllQuestions: (state: State, data: Question[]): void => {
+    setAllQuestions: (state: QuestionState, data: Question[]): void => {
       state.allQuestions = data;
     },
-    setCreateQuestion: (state: State, data: QuestionData): void => {
+    setCreateQuestion: (state: QuestionState, data: QuestionData): void => {
       state.createQuestion = data;
     },
   },

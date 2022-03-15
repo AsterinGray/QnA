@@ -8,7 +8,7 @@
     <nav>
       <router-link :to="{ name: ROUTES_NAME.HOME }">Home</router-link>
       <router-link :to="{ name: ROUTES_NAME.ABOUT }">About</router-link>
-      <router-link :to="{ name: ROUTES_NAME.SIGNUP }" v-if="isAuthenticate">
+      <router-link :to="{ name: ROUTES_NAME.PROFILE }" v-if="isAuthenticate">
         Profile
       </router-link>
       <button v-if="isAuthenticate" v-on:click="logout">Logout</button>

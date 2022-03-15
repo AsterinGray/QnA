@@ -6,8 +6,7 @@ export interface Base {
 
 export interface User extends Base {
   username: string;
-  password: string;
-  full_name: string;
+  fullname: string;
   gender: string;
   answers: Answer[];
   questions: Question[];

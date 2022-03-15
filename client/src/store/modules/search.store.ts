@@ -1,4 +1,4 @@
-interface State {
+export interface SearchState {
   searchQuery: string;
 }
 
@@ -7,10 +7,10 @@ const search = {
     searchQuery: "",
   },
   getters: {
-    getSearchQuery: (state: State): string => state.searchQuery,
+    getSearchQuery: (state: SearchState): string => state.searchQuery,
   },
   mutations: {
-    setSearchQuery: (state: State, data: string): void => {
+    setSearchQuery: (state: SearchState, data: string): void => {
       state.searchQuery = data;
     },
   },

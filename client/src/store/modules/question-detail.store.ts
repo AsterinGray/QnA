@@ -1,10 +1,10 @@
-import { Answer, Question, QuestionData } from "@/interfaces/index.interface";
+import { Answer, Question } from "@/interfaces/index.interface";
 import httpApi from "@/utils/http-api";
 import { Commit } from "vuex";
 import { AxiosResponse } from "axios";
 import config from "@/config";
 
-interface State {
+export interface QuestionDetailState {
   question: Question;
   answers: Answer[];
 }
@@ -15,14 +15,14 @@ const questionDetail = {
     answers: [],
   },
   getters: {
-    question: (state: State): Question => state.question,
-    questionAnswers: (state: State): Answer[] => state.answers,
+    question: (state: QuestionDetailState): Question => state.question,
+    questionAnswers: (state: QuestionDetailState): Answer[] => state.answers,
   },
   mutations: {
-    setQuestion: (state: State, data: Question): void => {
+    setQuestion: (state: QuestionDetailState, data: Question): void => {
       state.question = data;
     },
-    setQuestionAnswers: (state: State, data: Answer[]): void => {
+    setQuestionAnswers: (state: QuestionDetailState, data: Answer[]): void => {
       state.answers = data;
     },
   },
@@ -31,7 +31,6 @@ const questionDetail = {
       { commit }: { commit: Commit },
       id: number
     ): Promise<void> {
-      console.log(id);
       const res: AxiosResponse = await httpApi.get(
         config.api.question.getById(id)
       );
