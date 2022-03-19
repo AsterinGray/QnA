@@ -1,33 +1,49 @@
 <template>
-  <h1>{{ title }}</h1>
-  <p>{{ detail }}</p>
-  <p class="information">
-    <span v-if="author">
-      <span v-if="author.username">{{ author.username }}</span>
-    </span>
-    <span>{{ likes }} likes</span>
-  </p>
+  <div class="card">
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.detail }}</p>
+    <div class="information">
+      <span v-if="question.author">
+        <span v-if="question.author.username">{{
+          question.author.username
+        }}</span>
+      </span>
+      <span>{{ question.likes }} likes</span>
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "QuestionHeader",
-  props: ["title", "detail", "author", "likes"],
+  computed: {
+    ...mapGetters(["question"]),
+  },
+  methods: {
+    ...mapActions(["getQuestion"]),
+  },
+  mounted() {
+    this.getQuestion(Number(this.$route.params.id));
+  },
 };
 </script>
 
 <style scoped>
 h1 {
   text-align: left;
+  margin: 0;
 }
 
 p {
   text-align: left;
-  display: flex;
-  justify-content: space-between;
 }
 
 .information {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   color: darkgray;
 }
 </style>

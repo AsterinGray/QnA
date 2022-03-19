@@ -7,23 +7,16 @@
 
 <script>
 import NavigationBar from "@/components/common/NavigationBar";
-import { initTokenHeader, removeTokenHeader } from "@/utils/auth";
-import { mapGetters, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
+import { initAuthentication } from "@/utils/auth";
+
 export default {
   components: { NavigationBar },
-  computed: {
-    ...mapGetters(["isAuthenticate"]),
-  },
   methods: {
     ...mapMutations(["setIsAuthenticate"]),
   },
   created() {
-    initTokenHeader(this.setIsAuthenticate);
-  },
-  watch: {
-    isAuthenticate: function (val) {
-      if (!val) removeTokenHeader();
-    },
+    this.setIsAuthenticate(initAuthentication());
   },
 };
 </script>
@@ -58,6 +51,20 @@ body {
   padding: 1.5rem;
   text-align: left;
   margin-bottom: 2rem;
+}
+
+button {
+  background-color: dodgerblue;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: gray;
+  }
 }
 
 @media only screen and (max-width: 992px) {

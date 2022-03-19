@@ -2,7 +2,9 @@
   <input-question />
   <h1>See what other have questioned</h1>
   <div class="card question__container" v-if="questions">
+    <div v-if="questions.length === 0">No Data</div>
     <router-link
+      v-else
       v-for="question in questions"
       :key="question.id"
       :to="{ path: `/question/${question.id}` }"
@@ -10,7 +12,6 @@
       <question-card v-bind="question" />
     </router-link>
   </div>
-  <div v-if="questions.length === 0">No Data</div>
 </template>
 
 <script>

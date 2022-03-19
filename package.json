@@ -1,0 +1,24 @@
+{
+  "name": "qna",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "dev-server": "cd ./server && yarn run start:dev",
+    "dev-client": "cd ./client && yarn serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AsterinGray/QnA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AsterinGray/QnA/issues"
+  },
+  "homepage": "https://github.com/AsterinGray/QnA#readme",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

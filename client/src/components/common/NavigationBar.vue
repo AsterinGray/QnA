@@ -23,7 +23,7 @@
 import SearchBar from "@/components/common/SearchBar.vue";
 import { mapGetters, mapMutations } from "vuex";
 import { ROUTES_NAME } from "@/router";
-import cookies from "js-cookie";
+import { removeAuthentication } from "@/utils/auth";
 
 export default {
   name: "NavigationBar",
@@ -43,8 +43,8 @@ export default {
   methods: {
     ...mapMutations(["setIsAuthenticate"]),
     logout() {
-      cookies.remove("QnA_token");
-      this.setIsAuthenticate(false);
+      this.setIsAuthenticate(removeAuthentication());
+      this.$router.push({ name: ROUTES_NAME.HOME });
     },
   },
   components: {

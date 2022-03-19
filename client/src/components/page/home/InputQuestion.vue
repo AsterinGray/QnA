@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import { ROUTES_NAME } from "@/router";
 
 export default {
@@ -31,19 +31,20 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createQuestion"]),
-    ...mapMutations(["setCreateQuestion"]),
+    ...mapActions(["createQuestion", "getAllQuestions"]),
     errorHandler: function () {
       this.$toast.error("Need to login before ask question");
       this.$router.push({ name: ROUTES_NAME.LOGIN });
     },
     successHandler: function () {
+      this.title = "";
+      this.detail = "";
       this.$toast.success("Question created successfully");
-      this.isLoading(false);
+      this.isLoading = false;
+      this.getAllQuestions();
     },
     onFormSubmit: function (title, detail) {
       this.isLoading = true;
-      this.setCreateQuestion({ title, detail });
       this.createQuestion({
         data: { title, detail },
         successHandler: this.successHandler,
@@ -59,11 +60,6 @@ form {
   display: block;
   width: 100%;
 
-  input {
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-
   input,
   textarea {
     width: 100%;
@@ -72,20 +68,6 @@ form {
     margin-bottom: 1rem;
     resize: none;
     border: 1px solid lightgray;
-  }
-
-  button {
-    background-color: dodgerblue;
-    color: white;
-    border: none;
-    outline: none;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    cursor: pointer;
-
-    &:disabled {
-      background-color: gray;
-    }
   }
 }
 </style>

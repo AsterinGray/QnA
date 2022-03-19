@@ -1,7 +1,7 @@
-import { Answer, Question } from "@/interfaces/index.interface";
+import { ActionData, Answer, Question } from "@/interfaces/index.interface";
 import httpApi from "@/utils/http-api";
 import { Commit } from "vuex";
-import { AxiosResponse } from "axios";
+import { Axios, AxiosResponse } from "axios";
 import config from "@/config";
 
 export interface QuestionDetailState {
@@ -44,6 +44,22 @@ const questionDetail = {
         config.api.question.getAnswersByQuestion(id)
       );
       commit("setQuestionAnswers", res.data);
+    },
+    async createAnswerByQuestion(
+      { commit }: { commit: Commit },
+      {
+        data: { id, answer },
+        successHandler,
+        errorHandler,
+      }: ActionData<{ id: number; answer: string }>
+    ): Promise<void> {
+      httpApi
+        .post(config.api.question.addAnswer(id), { detail: answer })
+        .then(() => successHandler())
+        .catch((e) => {
+          console.log(e);
+          errorHandler();
+        });
     },
   },
 };
